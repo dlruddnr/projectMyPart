@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mypart.writemapper.WriteMapper">
+    <insert id="insPost" useGeneratedKeys="true" keyProperty="iboard" keyColumn="iboard" parameterType="com.example.mypart.writecontroller.PostModel">
+        insert into post_table(iuser, title, ctnt, region, place, location_Y, location_X, cntFav, season)
+        values(${iuser}, #{title}, #{ctnt}, ${region}, #{place}, #{location_Y}, #{location_X}, ${cntFav}, ${season})
+    </insert>
+
+    <insert id="insPostImg">
+        insert into post_img(iboard, img_addr)
+        values(${iboard}, #{img_addr})
+    </insert>
+
+</mapper>

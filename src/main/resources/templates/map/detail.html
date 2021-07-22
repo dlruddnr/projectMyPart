@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script defer src="/js/detail.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .swiper-container {
+            width: 600px;
+            height: 300px;
+        }
+        img{width: 100%; height: 100%;}
+        .hide{display: none;}
+        .openModal{display: flex;}
+    /*  지도 부분  */
+        .map_wrap {position:relative;width:100%;height:350px;}
+        .title {font-weight:bold;display:block;}
+        .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+        #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+        .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+    </style>
+</head>
+<body>
+    <h1>detail</h1>
+    <div>만약 작성자가 들어오면 수정버튼 생성하자</div>
+    <div th:text="제목 + ${result[0].title}"></div>
+    <div th:text="작성자닉네임 + ${result[0].writer}"></div>
+    <div th:text="내용 + ${result[0].ctnt}"></div>
+    <div th:text="지역구분 + ${result[0].region}"></div>
+    <div th:text="장소명 + ${result[0].place}"></div>
+    <div th:text="위치X + ${result[0].location_X}"></div>
+    <div th:text="위치Y + ${result[0].location_Y}"></div>
+    <div th:text="좋아요 + ${result[0].cntFav}"></div>
+    <div th:text="계절 + ${result[0].season}"></div>
+
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" th:each="img : ${result}">
+                <img th:src="@{/pic/post/{iboard}/{img_addr}(iboard=${img.iboard} ,img_addr=${img.img_addr})}">
+            </div>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div><button type="button" onclick="delClassHide()">위치보기</button></div>
+
+    <div id="map_modal" class="openModal" th:data-x="${result[0].location_X}" th:data-y="${result[0].location_Y}">
+        <div class="map_wrap">
+            <div class="modal_close_parent"><i class="modal_close fas fa-times"></i></div>
+            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+            <div class="hAddr">
+                <span class="title">지도중심기준 행정동 주소정보</span>
+                <span id="centerAddr"></span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=082cfeea117f1864eeae6afb01ef3f74&libraries=services"></script>
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+            // Optional parameters
+            direction: 'horizontal',
+            loop: false,
+
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+            },
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+            // And if we need scrollbar
+            scrollbar: {
+                el: '.swiper-scrollbar',
+            },
+        });
+    </script>
+</body>
+</html>

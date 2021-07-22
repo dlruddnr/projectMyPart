@@ -4,10 +4,13 @@ import com.example.mypart.common.FileUtils;
 import com.example.mypart.writecontroller.PostImg;
 import com.example.mypart.writecontroller.PostImgDAO;
 import com.example.mypart.writecontroller.PostModel;
+import com.example.mypart.writecontroller.PostModelDAO;
 import com.example.mypart.writemapper.WriteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public class WriteService {
@@ -27,14 +30,16 @@ public class WriteService {
         PostImg postImg=new PostImg();
         postImg.setIboard(param.getIboard());
         for(MultipartFile img: param.getFiles()){
-            System.out.println(img);
             String saveFileNm=fileUtils.transferTo(img,"post/"+param.getIboard());
-            System.out.println(saveFileNm);
             postImg.setImg_addr(saveFileNm);
             if(saveFileNm!=null){
                 mapper.insPostImg(postImg);
             }
         }
         return 0;
+    }
+
+    public List<PostModelDAO> selDetail(int iboard){
+        return mapper.selDetail(iboard);
     }
 }

@@ -11,4 +11,12 @@
         values(${iboard}, #{img_addr})
     </insert>
 
+    <select id="selDetail" resultType="com.example.mypart.writecontroller.PostModelDAO">
+        SELECT A.*, B.img_addr, C.nickNM AS writer FROM post_table A
+        INNER JOIN user_table C
+        ON A.iuser=C.iuser
+        LEFT JOIN post_img B
+        ON A.iboard=B.iboard
+        WHERE A.iboard=${iboard};
+    </select>
 </mapper>

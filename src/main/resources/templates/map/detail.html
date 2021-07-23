@@ -24,6 +24,7 @@
     </style>
 </head>
 <body>
+    <div id="infoSection" th:data-iuser="${result[0].iuser}" th:data-iboard="${result[0].iboard}">user 정보 존재 구간</div>
     <h1>detail</h1>
     <div>만약 작성자가 들어오면 수정버튼 생성하자</div>
     <div th:text="제목 + ${result[0].title}"></div>
@@ -66,29 +67,15 @@
         </div>
     </div>
 
+    <div>
+        <form name="cmtWindow" onsubmit="return uploadCmt()">
+            <textarea name="cmt"></textarea>
+            <input type="submit" value="댓글작성하기">
+        </form>
+    </div>
+    <div id="cmtContainer">
+
+    </div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=082cfeea117f1864eeae6afb01ef3f74&libraries=services"></script>
-    <script>
-        const swiper = new Swiper('.swiper-container', {
-            // Optional parameters
-            direction: 'horizontal',
-            loop: false,
-
-            // If we need pagination
-            pagination: {
-                el: '.swiper-pagination',
-            },
-
-            // Navigation arrows
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-
-            // And if we need scrollbar
-            scrollbar: {
-                el: '.swiper-scrollbar',
-            },
-        });
-    </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 var mapModalElement=document.querySelector('#map_modal')
+var infoSectionElem=document.querySelector('#infoSection')
 //모달창 띄우는 함수
 function delClassHide(){
     var closeIcon=document.querySelector('.modal_close', '.fas' ,'.fa-times')
@@ -6,6 +7,11 @@ function delClassHide(){
     closeIcon.addEventListener('click',()=>{
         onClassHide()
     })
+
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+    var placeLatLng=new kakao.maps.LatLng(dataY,dataX)
+    locationPoint(placeLatLng,map)
 }
 
 //모달창 숨기기 함수
@@ -23,7 +29,7 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     };
 
 // 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOption);
+
 
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
@@ -32,13 +38,11 @@ var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입
     infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
 
 // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
-searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
 
 //지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-var placeLatLng=new kakao.maps.LatLng(dataY,dataX)
-locationPoint(placeLatLng)
 
-function locationPoint(LatLng){
+function locationPoint(LatLng,map){
     searchDetailAddrFromCoords(LatLng,function (result, status){
         if(status===kakao.maps.services.Status.OK){
             var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
@@ -50,7 +54,7 @@ function locationPoint(LatLng){
                 '</div>';
 
             // 마커를 클릭한 위치에 표시합니다
-            marker.setPosition(new kakao.maps.LatLng(dataY,dataX));
+            marker.setPosition(LatLng);
             marker.setMap(map);
 
             // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
@@ -111,5 +115,100 @@ function displayCenterInfo(result, status) {
     }
 }
 
+
 //맵으로 인해
 mapModalElement.className='hide'
+
+//------------------------------swiper-------------------------------------------------------
+const swiper = new Swiper('.swiper-container', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: false,
+
+    // If we need pagination
+    pagination: {
+        el: '.swiper-pagination',
+    },
+
+    // Navigation arrows
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+
+    // And if we need scrollbar
+    scrollbar: {
+        el: '.swiper-scrollbar',
+    },
+});
+
+//---------------------댓글창 부분---------------------------------------------------------------
+const formCmt=document.cmtWindow
+makeComList()
+
+function uploadCmt(){
+    var cmtData={
+        iuser:infoSectionElem.dataset.iuser,
+        iboard:infoSectionElem.dataset.iboard,
+        cmt:formCmt.cmt.value
+    }
+
+    fetch('/detail/cmtUpload',{
+        method: 'POST',
+        headers:{"Content-Type":"application/json; charset=utf-8"},
+        body: JSON.stringify(cmtData)
+    }).then(res => res.json())
+        .then(myJson =>{
+            switch(myJson){
+                case 0:
+                    alert('댓글 입력에 실패')
+                    break
+                case 1:
+                    alert('댓글 입력 성공')
+                    break
+            }
+        })
+    return false
+}
+
+function makeComList(){
+    var iboard=infoSectionElem.dataset.iboard
+    fetch('/detail/cmtLoad?iboard='+iboard)
+        .then(res => res.json())
+        .then(myJson => {
+
+            const CMTCONTAINER=document.querySelector('#cmtContainer')
+            const TABLETAG=document.createElement('table')
+            const TRTAG=document.createElement('tr')
+            const THTAG1=document.createElement('th')
+            const THTAG2=document.createElement('th')
+            const THTAG3=document.createElement('th')
+
+            THTAG1.innerText='작성자'
+            THTAG2.innerText='댓글내용'
+            THTAG3.innerText='작성일'
+            TRTAG.append(THTAG1)
+            TRTAG.append(THTAG2)
+            TRTAG.append(THTAG3)
+            TABLETAG.append(TRTAG)
+
+            myJson.forEach(function(currentValue){
+                const CMTTR=document.createElement('tr')
+                const CMTTD1=document.createElement('td')
+                const CMTTD2=document.createElement('td')
+                const CMTTD3=document.createElement('td')
+
+                CMTTD1.innerText=currentValue.writer
+                CMTTD2.innerText=currentValue.cmt
+                CMTTD3.innerText=currentValue.regdt
+
+                CMTTR.append(CMTTD1)
+                CMTTR.append(CMTTD2)
+                CMTTR.append(CMTTD3)
+
+                TABLETAG.append(CMTTR)
+            })
+
+            CMTCONTAINER.append(TABLETAG)
+        })
+}

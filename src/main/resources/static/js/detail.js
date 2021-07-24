@@ -144,40 +144,16 @@ const swiper = new Swiper('.swiper-container', {
 
 //---------------------댓글창 부분---------------------------------------------------------------
 const formCmt=document.cmtWindow
+const CMTCONTAINER=document.querySelector('#cmtContainer')
 makeComList()
 
-function uploadCmt(){
-    var cmtData={
-        iuser:infoSectionElem.dataset.iuser,
-        iboard:infoSectionElem.dataset.iboard,
-        cmt:formCmt.cmt.value
-    }
-
-    fetch('/detail/cmtUpload',{
-        method: 'POST',
-        headers:{"Content-Type":"application/json; charset=utf-8"},
-        body: JSON.stringify(cmtData)
-    }).then(res => res.json())
-        .then(myJson =>{
-            switch(myJson){
-                case 0:
-                    alert('댓글 입력에 실패')
-                    break
-                case 1:
-                    alert('댓글 입력 성공')
-                    break
-            }
-        })
-    return false
-}
-
+//댓글 테이블 구현
 function makeComList(){
     var iboard=infoSectionElem.dataset.iboard
     fetch('/detail/cmtLoad?iboard='+iboard)
         .then(res => res.json())
         .then(myJson => {
 
-            const CMTCONTAINER=document.querySelector('#cmtContainer')
             const TABLETAG=document.createElement('table')
             const TRTAG=document.createElement('tr')
             const THTAG1=document.createElement('th')
@@ -212,3 +188,38 @@ function makeComList(){
             CMTCONTAINER.append(TABLETAG)
         })
 }
+
+//댓글 업로드
+function uploadCmt(){
+    var cmtData={
+        iuser:infoSectionElem.dataset.iuser,
+        iboard:infoSectionElem.dataset.iboard,
+        cmt:formCmt.cmt.value
+    }
+
+    if(cmtData.cmt==''){
+        alert('댓글을 입력하세요')
+        return false
+    }else if(cmtData.cmt.replace(/^\s+|\s+$/g,'')==''){
+        alert('댓글창이 공백입니다')
+        return false
+    }
+    fetch('/detail/cmtUpload',{
+        method: 'POST',
+        headers:{"Content-Type":"application/json; charset=utf-8"},
+        body: JSON.stringify(cmtData)
+    }).then(res => res.json())
+        .then(myJson =>{
+            switch(myJson){
+                case 0:
+                    alert('댓글 입력에 실패')
+                    break
+                case 1:
+                    alert('댓글 입력 성공')
+                    location.reload()
+                    break
+            }
+        })
+    return false
+}
+

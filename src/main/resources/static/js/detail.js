@@ -150,6 +150,8 @@ makeComList()
 //댓글 테이블 구현
 function makeComList(){
     var iboard=infoSectionElem.dataset.iboard
+    var iuser=infoSectionElem.dataset.iuser
+
     fetch('/detail/cmtLoad?iboard='+iboard)
         .then(res => res.json())
         .then(myJson => {
@@ -159,6 +161,7 @@ function makeComList(){
             const THTAG1=document.createElement('th')
             const THTAG2=document.createElement('th')
             const THTAG3=document.createElement('th')
+            const THTAG4=document.createElement('th')
 
             THTAG1.innerText='작성자'
             THTAG2.innerText='댓글내용'
@@ -166,6 +169,7 @@ function makeComList(){
             TRTAG.append(THTAG1)
             TRTAG.append(THTAG2)
             TRTAG.append(THTAG3)
+            TRTAG.append(THTAG4)
             TABLETAG.append(TRTAG)
 
             myJson.forEach(function(currentValue){
@@ -173,6 +177,14 @@ function makeComList(){
                 const CMTTD1=document.createElement('td')
                 const CMTTD2=document.createElement('td')
                 const CMTTD3=document.createElement('td')
+                const CMTTD4=document.createElement('td')
+                console.log(currentValue.icmt)
+                if(iuser==currentValue.iuser){
+                    const TRASHIMG=document.createElement('img')
+                    TRASHIMG.classList='far fa-trash-alt'
+                    TRASHIMG.addEventListener('click',delCmt(currentValue.icmt,iuser))
+                    CMTTD4.append(TRASHIMG)
+                }
 
                 CMTTD1.innerText=currentValue.writer
                 CMTTD2.innerText=currentValue.cmt
@@ -181,6 +193,7 @@ function makeComList(){
                 CMTTR.append(CMTTD1)
                 CMTTR.append(CMTTD2)
                 CMTTR.append(CMTTD3)
+                CMTTR.append(CMTTD4)
 
                 TABLETAG.append(CMTTR)
             })
@@ -221,5 +234,22 @@ function uploadCmt(){
             }
         })
     return false
+}
+
+//댓글 수정
+function modCmt(){
+
+}
+
+//댓글 삭제
+function delCmt(icmt,iuser){
+    fetch('/detail/cmtDel',{
+        method:'POST',
+        headers:{'Content-Type:':'application/json; charset:=utf-8'},
+        body: JSON.stringify({icmt:icmt, iuser:iuser})
+    }).then(res => res.json())
+        .then(myJson =>{
+            console.log(myJson)
+        })
 }
 

@@ -30,4 +30,11 @@ public class DetailController {
         int result=service.insCmt(param);
         return result;
     }
+
+    @ResponseBody
+    @PostMapping("/cmtDel")
+    public int cmtDel(@RequestBody CmtDAO param){
+        System.out.println(param);
+        return 1;
+    }
 }

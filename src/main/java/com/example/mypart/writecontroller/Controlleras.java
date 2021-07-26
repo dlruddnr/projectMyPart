@@ -1,13 +1,12 @@
 package com.example.mypart.writecontroller;
 
+import com.example.mypart.detail.DetailService;
+import com.example.mypart.detail.model.PostFavEntity;
 import com.example.mypart.writeservice.WriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,6 +17,8 @@ import java.util.List;
 public class Controlleras {
     @Autowired
     private WriteService writeService;
+    @Autowired
+    private DetailService detailService;
 
     @RequestMapping("/search")
     public String search(){
@@ -49,8 +50,17 @@ public class Controlleras {
 
     @RequestMapping("/detail")
     public String detail(@RequestParam("iboard") int iboard, Model model){
-        List<PostModelDAO> result= writeService.selDetail(iboard);
+        PostModelDAO param=new PostModelDAO();
+        PostFavEntity postFavEntity=new PostFavEntity();
+        postFavEntity.setIboard(iboard);
+        detailService.updFav(postFavEntity);
+        param.setIboard(iboard);
+        List<PostModelDAO> result= writeService.selDetail(param);
         model.addAttribute("result",result);
+        param.setUserIuser(1);
+        model.addAttribute("chFav",writeService.chFav(param));
         return "map/detail";
     }
+
+
 }

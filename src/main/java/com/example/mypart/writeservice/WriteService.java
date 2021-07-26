@@ -39,7 +39,11 @@ public class WriteService {
         return 0;
     }
 
-    public List<PostModelDAO> selDetail(int iboard){
+    public List<PostModelDAO> selDetail(PostModelDAO iboard){
         return mapper.selDetail(iboard);
+    }
+
+    public PostModelDAO chFav(PostModelDAO param){
+        return mapper.chFav(param);
     }
 }

@@ -14,5 +14,6 @@ public interface WriteMapper {
     int insPost(PostModel param);
     int insPostImg(PostImg param);
 
-    List<PostModelDAO> selDetail(int iboard);
+    List<PostModelDAO> selDetail(PostModelDAO iboard);
+    PostModelDAO chFav(PostModelDAO param);
 }

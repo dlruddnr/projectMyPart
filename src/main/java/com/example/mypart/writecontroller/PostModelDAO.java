@@ -10,4 +10,6 @@ import lombok.ToString;
 public class PostModelDAO extends PostModel{
     private String img_addr;
     private String writer;
+    private int userIuser;
+    private int countFav;
 }

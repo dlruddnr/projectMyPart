@@ -13,4 +13,28 @@
         INSERT INTO cmt_table(iuser, iboard, cmt)
         VALUES(${iuser}, ${iboard}, #{cmt});
     </insert>
+
+    <delete id="delCmt">
+        delete from cmt_table
+        where iuser=${iuser} and icmt=${icmt}
+    </delete>
+
+    <insert id="insFav">
+        insert into post_fav(iboard, iuser)
+        values(${iboard}, ${iuser})
+    </insert>
+
+    <update id="updFav">
+        update post_table set cntFav=${selCntFav}
+        <selectKey keyProperty="selCntFav" resultType="integer" order="BEFORE">
+            select count(iboard) from post_fav
+            where iboard=${iboard}
+        </selectKey>
+        where iboard=${iboard}
+    </update>
+
+    <delete id="delFav">
+        delete from post_fav
+        where iuser=${iuser} and iboard=${iboard}
+    </delete>
 </mapper>

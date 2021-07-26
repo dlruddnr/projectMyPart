@@ -1,3 +1,4 @@
+
 var mapModalElement=document.querySelector('#map_modal')
 var infoSectionElem=document.querySelector('#infoSection')
 //모달창 띄우는 함수
@@ -145,13 +146,12 @@ const swiper = new Swiper('.swiper-container', {
 //---------------------댓글창 부분---------------------------------------------------------------
 const formCmt=document.cmtWindow
 const CMTCONTAINER=document.querySelector('#cmtContainer')
+var iuser=infoSectionElem.dataset.iuser
+var iboard=infoSectionElem.dataset.iboard
 makeComList()
 
 //댓글 테이블 구현
 function makeComList(){
-    var iboard=infoSectionElem.dataset.iboard
-    var iuser=infoSectionElem.dataset.iuser
-
     fetch('/detail/cmtLoad?iboard='+iboard)
         .then(res => res.json())
         .then(myJson => {
@@ -178,12 +178,13 @@ function makeComList(){
                 const CMTTD2=document.createElement('td')
                 const CMTTD3=document.createElement('td')
                 const CMTTD4=document.createElement('td')
-                console.log(currentValue.icmt)
+
                 if(iuser==currentValue.iuser){
-                    const TRASHIMG=document.createElement('img')
-                    TRASHIMG.classList='far fa-trash-alt'
-                    TRASHIMG.addEventListener('click',delCmt(currentValue.icmt,iuser))
-                    CMTTD4.append(TRASHIMG)
+                    const ICONTAG=document.createElement('i')
+                    ICONTAG.classList='far fa-trash-alt pointer'
+                    ICONTAG.dataset.icmt=currentValue.icmt
+                    ICONTAG.addEventListener('click', delCmt)
+                    CMTTD4.append(ICONTAG)
                 }
 
                 CMTTD1.innerText=currentValue.writer
@@ -242,14 +243,75 @@ function modCmt(){
 }
 
 //댓글 삭제
-function delCmt(icmt,iuser){
-    fetch('/detail/cmtDel',{
+function delCmt(){
+    if(confirm('댓글을 삭제하시겠습니까?')){
+        icmt=this.dataset.icmt
+        fetch('/detail/cmtDel',{
+            method: 'POST',
+            headers:{'Content-Type':'application/json; charset=utf-8'},
+            body: JSON.stringify({icmt:icmt, iuser:iuser})
+        }).then(res => res.json())
+            .then(myJson =>{
+                switch (myJson) {
+                    case 1:
+                        alert('삭제되었습니다')
+                        location.reload()
+                        break
+                    case 0:
+                        alert('삭제실패')
+                        break
+                }
+            })
+    }
+}
+
+//좋아요 부분
+var iconFavElem=document.querySelector('#thumbs-up')
+const ICONFAV=document.createElement('i')
+if(iconFavElem.dataset.myfav==0){
+    ICONFAV.classList='far fa-thumbs-up pointer'
+    ICONFAV.addEventListener('click',insFav)
+}else{
+    ICONFAV.classList='fas fa-thumbs-up pointer'
+    ICONFAV.addEventListener('click',delFav)
+}
+ICONFAV.innerText=iconFavElem.dataset.favcount
+iconFavElem.append(ICONFAV)
+
+function insFav(){
+    fetch('/detail/insFav',{
         method:'POST',
-        headers:{'Content-Type:':'application/json; charset:=utf-8'},
-        body: JSON.stringify({icmt:icmt, iuser:iuser})
+        headers:{'Content-Type':'application/json; charset=utf-8'},
+        body:JSON.stringify({iuser:1, iboard:iboard})
     }).then(res => res.json())
-        .then(myJson =>{
-            console.log(myJson)
+        .then(myJson => {
+            if(myJson==1){
+                ICONFAV.classList='fas fa-thumbs-up pointer'
+                iconFavElem.dataset.favcount=parseInt((iconFavElem.dataset.favcount))+1
+                ICONFAV.innerText=iconFavElem.dataset.favcount
+                ICONFAV.removeEventListener('click',insFav)
+                ICONFAV.addEventListener('click',delFav)
+            }
         })
 }
 
+function delFav(){
+    fetch('/detail/delFav',{
+        method:'POST',
+        headers:{'Content-Type':'application/json; charset=utf-8'},
+        body:JSON.stringify({iuser:1, iboard:iboard})
+    }).then(res => res.json())
+        .then(myJson => {
+            if(myJson==1){
+                ICONFAV.classList='far fa-thumbs-up pointer'
+                iconFavElem.dataset.favcount=parseInt((iconFavElem.dataset.favcount))-1
+                ICONFAV.innerText=iconFavElem.dataset.favcount
+                ICONFAV.removeEventListener('click',delFav)
+                ICONFAV.addEventListener('click',insFav)
+            }
+        })
+}
+
+
+//<i className="fas fa-thumbs-up"></i> 채워진거
+//<i className="far fa-thumbs-up"></i>    안채워진거

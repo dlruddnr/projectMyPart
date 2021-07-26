@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-    <div id="infoSection" th:data-iuser="${result[0].iuser}" th:data-iboard="${result[0].iboard}">user 정보 존재 구간</div>
+    <div id="infoSection" th:data-iuser="1" th:data-iboard="${result[0].iboard}">user 정보 존재 구간</div>
     <h1>detail</h1>
     <div>만약 작성자가 들어오면 수정버튼 생성하자</div>
     <div th:text="제목 + ${result[0].title}"></div>
@@ -52,6 +52,12 @@
 
         <!-- If we need scrollbar -->
         <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div id="thumbs-up" th:data-myfav="${chFav.countFav}" th:data-favcount="${result[0].cntFav}">
+
+<!--        <div th:if="${chFav.countFav} eq 0"><i th:text="${result[0].cntFav}" class="far fa-thumbs-up"></i></div>-->
+<!--        <div th:unless="${chFav.countFav} eq 0"><i th:text="${result[0].cntFav}" class="fas fa-thumbs-up"></i></div>-->
     </div>
 
     <div><button type="button" onclick="delClassHide()">위치보기</button></div>

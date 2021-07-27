@@ -2,6 +2,7 @@ package com.example.mypart.detail;
 
 import com.example.mypart.detail.model.CmtDAO;
 import com.example.mypart.detail.model.PostFavEntity;
+import com.example.mypart.writecontroller.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -36,4 +37,8 @@ public class DetailService {
     public int delFav(PostFavEntity param){ return mapper.delFav(param);}
 
     public int updFav(PostFavEntity param){ return mapper.updFav(param);}
+
+    public int delPost(PostModel param){
+        return mapper.delPost(param);
+    }
 }

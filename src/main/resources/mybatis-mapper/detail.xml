@@ -37,4 +37,9 @@
         delete from post_fav
         where iuser=${iuser} and iboard=${iboard}
     </delete>
+
+    <delete id="delPost">
+        delete from post_table
+        where iuser=${iuser} and iboard=${iboard}
+    </delete>
 </mapper>

@@ -2,6 +2,7 @@ package com.example.mypart.detail;
 
 import com.example.mypart.detail.model.CmtDAO;
 import com.example.mypart.detail.model.PostFavEntity;
+import com.example.mypart.writecontroller.PostModel;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface DetailMapper {
     int insFav(PostFavEntity param);
     int delFav(PostFavEntity param);
     int updFav(PostFavEntity param);
+    int delPost(PostModel param);
 }

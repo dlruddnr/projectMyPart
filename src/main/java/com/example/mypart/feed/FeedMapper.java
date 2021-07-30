@@ -9,6 +9,8 @@ public interface FeedMapper {
 
     List<PostModelDAO> selMyFeedList(PostModelDAO param);
     List<PostModelDAO> selLikeFeedList(PostModelDAO param);
+    List<PostModelDAO> selFavList(PostModelDAO param);
+
     int selFeedPage1(PostModelDAO param);
     int selFeedPage2(PostModelDAO param);
 }

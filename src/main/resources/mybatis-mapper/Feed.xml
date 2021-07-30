@@ -28,6 +28,17 @@
         LIMIT ${startPage},9;
     </select>
 
+    <select id="selFavList" resultType="com.example.mypart.writecontroller.PostModelDAO">
+        SELECT * from post_table A
+        INNER JOIN user_table B
+        ON A.iuser=B.iuser
+        LEFT JOIN post_img C
+        ON A.iboard=C.iboard
+        GROUP BY A.iboard
+        ORDER BY A.cntFav DESC, A.iboard DESC
+        limit 9
+    </select>
+
     <select id="selFeedPage" resultType="integer">
         SELECT CEIL(COUNT(iboard)/${limit}) FROM post_table
         WHERE iuser=${iuser};

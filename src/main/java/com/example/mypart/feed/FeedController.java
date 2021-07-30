@@ -49,6 +49,23 @@ public class FeedController {
         return list;
     }
 
+    @RequestMapping("/favfeedlist")
+    public String favFeedList(){
+        return "/map/favFeed";
+    }
+
+    @ResponseBody
+    @RequestMapping("/fav")
+    public List<PostModelDAO> favFeedList(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit,@RequestParam("page") int page){
+        PostModelDAO postModelDAO=new PostModelDAO();
+        postModelDAO.setIuser(iuser);
+        postModelDAO.setStartPage((page-1)*limit);
+        List<PostModelDAO> list=feedService.selFavList(postModelDAO);
+        return list;
+    }
+
+
+
     @ResponseBody
     @RequestMapping("/myfeedpage")
     public int myFeedPage(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit, @RequestParam("type") int type){

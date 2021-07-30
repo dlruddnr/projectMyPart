@@ -14,8 +14,27 @@
         LIMIT ${startPage},9
     </select>
 
+    <select id="selLikeFeedList" resultType="com.example.mypart.writecontroller.PostModelDAO">
+        SELECT B.iboard, B.iuser,E.nickNM AS writer ,B.title, B.cntFav, B.season, C.img_addr FROM post_fav A
+        INNER JOIN post_table B
+        ON A.iboard=B.iboard
+        INNER JOIN user_table E
+        ON B.iuser=E.iuser
+        LEFT JOIN post_img C
+        ON A.iboard=C.iboard
+        WHERE A.iuser=${iuser}
+        GROUP BY B.iboard
+        ORDER BY iboard desc
+        LIMIT ${startPage},9;
+    </select>
+
     <select id="selFeedPage" resultType="integer">
         SELECT CEIL(COUNT(iboard)/${limit}) FROM post_table
+        WHERE iuser=${iuser};
+    </select>
+
+    <select id="selFeedPage2" resultType="integer">
+        SELECT CEIL(COUNT(iboard)/${limit}) FROM post_fav
         WHERE iuser=${iuser};
     </select>
 </mapper>

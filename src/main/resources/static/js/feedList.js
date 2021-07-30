@@ -5,7 +5,8 @@ const feedListObj={
     iuser:1,
     limit:9,
     page:1,
-    url:'/feed/list',
+    url:'',
+    type:0,
     makeFeedList: function(e){
         feedContainerElem.innerHTML=`<div id="container1"></div>
                                      <div id="container2"></div>
@@ -51,7 +52,7 @@ const feedListObj={
     },
 
     getFeedPage : function (){
-        fetch(`/feed/myfeedpage?iuser=${feedListObj.iuser}&limit=${feedListObj.limit}`)
+        fetch(`/feed/myfeedpage?iuser=${feedListObj.iuser}&limit=${feedListObj.limit}&type=${feedListObj.type}`)
             .then(res => res.json())
             .then(myJson => {
 
@@ -69,8 +70,7 @@ const feedListObj={
     }
 }
 
-feedListObj.makeFeedList()
-feedListObj.getFeedPage()
+
 //feed/list
 
 

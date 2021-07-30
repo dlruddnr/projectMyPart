@@ -25,7 +25,7 @@ public class FeedController {
     }
 
     @ResponseBody
-    @RequestMapping("/list")
+    @RequestMapping("/my")
     public List<PostModelDAO> feedList(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit,@RequestParam("page") int page){
         PostModelDAO postModelDAO=new PostModelDAO();
         postModelDAO.setIuser(iuser);
@@ -34,12 +34,30 @@ public class FeedController {
         return list;
     }
 
+    @RequestMapping("/likefeedlist")
+    public String likeFeedList(){
+        return "/map/likeFeed";
+    }
+
+    @ResponseBody
+    @RequestMapping("/like")
+    public List<PostModelDAO> likeFeedList(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit,@RequestParam("page") int page){
+        PostModelDAO postModelDAO=new PostModelDAO();
+        postModelDAO.setIuser(iuser);
+        postModelDAO.setStartPage((page-1)*limit);
+        List<PostModelDAO> list=feedService.selLikeFeedList(postModelDAO);
+        return list;
+    }
+
     @ResponseBody
     @RequestMapping("/myfeedpage")
-    public int myFeedPage(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit){
+    public int myFeedPage(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit, @RequestParam("type") int type){
         PostModelDAO postModelDAO=new PostModelDAO();
         postModelDAO.setIuser(iuser);
         postModelDAO.setLimit(limit);
-        return feedService.selFeedPage(postModelDAO);
+        if(type==0){
+            return feedService.selFeedPage1(postModelDAO);
+        }
+        return feedService.selFeedPage2(postModelDAO);
     }
 }

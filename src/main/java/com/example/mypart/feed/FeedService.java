@@ -14,7 +14,13 @@ public class FeedService {
         return feedMapper.selMyFeedList(param);
     }
 
-    public int selFeedPage(PostModelDAO param){
-        return feedMapper.selFeedPage(param);
+    public List<PostModelDAO> selLikeFeedList(PostModelDAO param) { return feedMapper.selLikeFeedList(param);}
+
+    public int selFeedPage1(PostModelDAO param){
+        return feedMapper.selFeedPage1(param);
+    }
+
+    public int selFeedPage2(PostModelDAO param){
+        return feedMapper.selFeedPage2(param);
     }
 }

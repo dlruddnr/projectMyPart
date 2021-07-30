@@ -12,4 +12,7 @@ public class PostModelDAO extends PostModel{
     private String writer;
     private int userIuser;
     private int countFav;
+    private int startPage;
+    private int pageNum;
+    private int limit;
 }

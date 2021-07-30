@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mypart.feed.FeedMapper">
-    <select id="selMyFeedList">
-        select
+    <select id="selMyFeedList" resultType="com.example.mypart.writecontroller.PostModelDAO">
+        SELECT *
+        FROM (SELECT A.*, B.nickNM, C.img_addr FROM post_table A
+        INNER JOIN user_table B
+        ON A.iuser=B.iuser
+        LEFT JOIN post_img C
+        ON A.iboard=C.iboard
+        WHERE A.iuser=${iuser})D
+        GROUP BY D.iboard
+        ORDER BY D.iboard desc
+        LIMIT ${startPage},9
+    </select>
+
+    <select id="selFeedPage" resultType="integer">
+        SELECT CEIL(COUNT(iboard)/${limit}) FROM post_table
+        WHERE iuser=${iuser};
     </select>
 </mapper>

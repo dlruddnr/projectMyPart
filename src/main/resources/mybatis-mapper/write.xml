@@ -24,4 +24,5 @@
         select count(iboard) as countFav from post_fav
         where iuser=${userIuser} and iboard=${iboard}
     </select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.mypart.feed;
 
+import com.example.mypart.search.model.SearchDAO;
 import com.example.mypart.writecontroller.PostModelDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,4 +26,6 @@ public class FeedService {
     public int selFeedPage2(PostModelDAO param){
         return feedMapper.selFeedPage2(param);
     }
+
+    public int selFeedPage3(SearchDAO param) { return feedMapper.selFeedPage3(param); }
 }

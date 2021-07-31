@@ -1,5 +1,6 @@
 package com.example.mypart.feed;
 
+import com.example.mypart.search.model.SearchDAO;
 import com.example.mypart.writecontroller.PostModelDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,7 +69,8 @@ public class FeedController {
 
     @ResponseBody
     @RequestMapping("/myfeedpage")
-    public int myFeedPage(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit, @RequestParam("type") int type){
+    public int myFeedPage(@RequestParam("iuser") int iuser, @RequestParam("limit") int limit, @RequestParam("type") int type,
+                          @RequestParam(value="searchType", required = false) int searchType, @RequestParam(value="searchWord", required = false) String searchWord){
         PostModelDAO postModelDAO=new PostModelDAO();
         postModelDAO.setIuser(iuser);
         postModelDAO.setLimit(limit);

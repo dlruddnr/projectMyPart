@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>검색으로 피드 띄우기</title>
+    <style>
+        img{width: 100px; height: 100px;}
+        /*#feedContainer{display: flex; flex-direction: row;}*/
+    </style>
+    <script defer src="/js/searchFeed.js"></script>
+</head>
+<body>
+
+    <div id="searchData" th:data-search-word="${search.searchWord}" th:data-search-type="${search.searchType}" th:text="${search.searchWord}"></div>
+
+
+
+    <div id="feedContainer">
+
+    </div>
+
+    <div th:if="${pageNum!=0}" id="pagingContainer" th:data-page-num="${pageNum}">asdasd</div>
+
+</body>
+</html>

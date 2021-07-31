@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mypart.search.SearchMapper">
+    <select id="selSearchResult" resultType="com.example.mypart.writecontroller.PostModelDAO">
+        SELECT A.iboard, A.iuser, A.title, A.place, A.cntFav, B.nickNM AS writer, C.img_addr
+        FROM post_table A
+        INNER JOIN user_table B
+        ON A.iuser=B.iuser
+        LEFT JOIN post_img C
+        ON A.iboard=C.iboard
+        <if test="searchType==1">
+            WHERE A.title REGEXP #{searchWord}
+        </if>
+        <if test="searchType==2">
+            WHERE A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==3">
+            WHERE A.title REGEXP #{searchWord} and A.ctnt REGEXP #{searchWord}
+        </if>
+        <if test="searchType==4">
+            WHERE A.nickNM REGEXP #{searchWord}
+        </if>
+        GROUP BY A.iboard
+        ORDER BY A.iboard desc
+        limit ${startPage}, 9
+    </select>
+</mapper>

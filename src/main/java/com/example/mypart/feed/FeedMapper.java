@@ -1,5 +1,6 @@
 package com.example.mypart.feed;
 
+import com.example.mypart.search.model.SearchDAO;
 import com.example.mypart.writecontroller.PostModelDAO;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
@@ -13,4 +14,5 @@ public interface FeedMapper {
 
     int selFeedPage1(PostModelDAO param);
     int selFeedPage2(PostModelDAO param);
+    int selFeedPage3(SearchDAO param);
 }

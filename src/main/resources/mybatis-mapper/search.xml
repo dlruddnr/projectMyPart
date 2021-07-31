@@ -18,7 +18,7 @@
             WHERE A.title REGEXP #{searchWord} and A.ctnt REGEXP #{searchWord}
         </if>
         <if test="searchType==4">
-            WHERE A.nickNM REGEXP #{searchWord}
+            WHERE B.nickNM REGEXP #{searchWord}
         </if>
         GROUP BY A.iboard
         ORDER BY A.iboard desc

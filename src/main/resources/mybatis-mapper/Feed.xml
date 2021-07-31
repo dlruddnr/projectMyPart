@@ -51,6 +51,8 @@
 
     <select id="selFeedPage3" resultType="integer">
         select ifnull(C, 0) from (SELECT CEIL(COUNT(iboard)/${limit}) as C FROM post_table A
+        inner join user_table B
+        on A.iuser=B.iuser
         <if test="searchType==1">
             WHERE A.title REGEXP #{searchWord}
         </if>
@@ -58,10 +60,10 @@
             WHERE A.ctnt REGEXP #{searchWord}
         </if>
         <if test="searchType==3">
-            WHERE A.title REGEXP #{searchWord} and A.ctnt REGEXP #{searchWord}
+            WHERE A.title REGEXP #{searchWord} or A.ctnt REGEXP #{searchWord}
         </if>
         <if test="searchType==4">
-            WHERE A.nickNM REGEXP #{searchWord}
-        </if>) B
+            WHERE B.nickNM REGEXP #{searchWord}
+        </if>) D
     </select>
 </mapper>
